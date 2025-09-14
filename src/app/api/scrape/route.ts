@@ -4,27 +4,38 @@ export const maxDuration = 180;
 
 export async function POST(request: NextRequest) {
   try {
-    const { url, mode, schema, prompt: customPrompt } = await request.json();
+    const { url, mode, schema, prompt: customPrompt, searchQuery } = await request.json();
     
     // Log request details
-    console.log(`[Scrape API] Request: ${mode} mode for ${url}`);
+    console.log(`[Scrape API] Request: ${mode} mode for ${url || 'search: ' + searchQuery}`);
     console.log(`[Scrape API] Has custom prompt: ${!!customPrompt}`);
     console.log(`[Scrape API] Has schema: ${!!schema}`);
+    console.log(`[Scrape API] Has search query: ${!!searchQuery}`);
     
-    if (!url) {
-      console.log(`[Scrape API] Error: No URL provided`);
+    if (!url && !searchQuery) {
+      console.log(`[Scrape API] Error: No URL or search query provided`);
       return NextResponse.json(
-        { error: 'URL is required' },
+        { error: 'URL or search query is required' },
         { status: 400 }
       );
     }
 
     let prompt = '';
     
-    if (mode === 'markdown') {
-      prompt = `Extract and return all content from ${url} as markdown (bnothing else around it). Don't hallucinate or make anything up, just 1:1 content.`;
+    if (searchQuery) {
+      // Search mode - first search, then extract from results
+      if (mode === 'markdown') {
+        prompt = `Search for "${searchQuery}" and return the most relevant content as markdown. Focus on recent, high-quality results.`;
+      } else {
+        prompt = `Search for "${searchQuery}" and extract structured data from the most relevant results. Return ONLY valid JSON.`;
+        if (customPrompt) {
+          prompt += ` ${customPrompt}`;
+        }
+      }
+    } else if (mode === 'markdown') {
+      prompt = `Extract and return all content from ${url} as markdown (nothing else around it). Don't hallucinate or make anything up, just 1:1 content.`;
     } else {
-      // JSON mode
+      // JSON mode with URL
       prompt = `Please analyze the content at ${url} and extract structured data. Return ONLY valid JSON, no explanations or text outside the JSON structure.`;
       
       if (schema) {
@@ -55,16 +66,23 @@ export async function POST(request: NextRequest) {
             role: "user",
             content: prompt
           },
-          ...(mode === 'json' ? [{
+          ...(mode === 'json' && !searchQuery ? [{
             role: "assistant",
             content: "{"
           }] : [])
         ],
-        tools: [{
-          type: "web_fetch_20250910",
-          name: "web_fetch",
-          max_uses: 5
-        }]
+        tools: [
+          ...(searchQuery ? [{
+            type: "web_search_20250305",
+            name: "web_search",
+            max_uses: 3
+          }] : []),
+          {
+            type: "web_fetch_20250910",
+            name: "web_fetch",
+            max_uses: 5
+          }
+        ]
       })
     });
 

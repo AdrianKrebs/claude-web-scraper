@@ -27,7 +27,9 @@ interface ScrapedResult {
 }
 
 function HomePageContent() {
+    const [inputMode, setInputMode] = useState<'url' | 'search'>('url');
     const [url, setUrl] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
     const [mode, setMode] = useState<'markdown' | 'json'>('json');
     const [customPrompt, setCustomPrompt] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +37,7 @@ function HomePageContent() {
     const [error, setError] = useState("");
 
     async function handleScrape() {
-        if (!url) return;
+        if (!url && !searchQuery) return;
         
         setIsLoading(true);
         setError("");
@@ -48,7 +50,8 @@ function HomePageContent() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                    url, 
+                    url: inputMode === 'url' ? url : undefined, 
+                    searchQuery: inputMode === 'search' ? searchQuery : undefined,
                     mode,
                     prompt: customPrompt || null
                 }),
@@ -96,20 +99,55 @@ function HomePageContent() {
                 </div>
                 
                 <form onSubmit={handleSubmit} className="space-y-5 mb-8">
-                    <div className="space-y-2">
-                        <Label htmlFor="url">Website URL *</Label>
-                        <Input
-                            id="url"
-                            type="url"
-                            value={url}
-                            onChange={(e) => setUrl(e.target.value)}
-                            placeholder="https://example.com"
-                            required
-                        />
+                    <div className="space-y-3">
+                        <Label>Input Method</Label>
+                        <RadioGroup 
+                            value={inputMode} 
+                            onValueChange={(value: 'url' | 'search') => setInputMode(value)}
+                            className="flex gap-6"
+                        >
+                            <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="url" id="url-mode" />
+                                <Label htmlFor="url-mode">Website URL</Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="search" id="search-mode" />
+                                <Label htmlFor="search-mode">Web Search</Label>
+                            </div>
+                        </RadioGroup>
                     </div>
 
+                    {inputMode === 'url' ? (
+                        <div className="space-y-2">
+                            <Label htmlFor="url">Website URL *</Label>
+                            <Input
+                                id="url"
+                                type="url"
+                                value={url}
+                                onChange={(e) => setUrl(e.target.value)}
+                                placeholder="https://example.com"
+                                required
+                            />
+                        </div>
+                    ) : (
+                        <div className="space-y-2">
+                            <Label htmlFor="search">Search Query *</Label>
+                            <Input
+                                id="search"
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="quantum computing latest developments"
+                                required
+                            />
+                            <p className="text-xs text-muted-foreground">
+                                Search the web and extract data from the most relevant results
+                            </p>
+                        </div>
+                    )}
+
                     <div className="space-y-3">
-                        <Label>Extraction Mode</Label>
+                        <Label>Output Format</Label>
                         <RadioGroup 
                             value={mode} 
                             onValueChange={(value: 'markdown' | 'json') => setMode(value)}
@@ -146,15 +184,15 @@ function HomePageContent() {
                     <Button 
                         type="submit" 
                         className="w-full" 
-                        disabled={!url || isLoading}
+                        disabled={(inputMode === 'url' && !url) || (inputMode === 'search' && !searchQuery) || isLoading}
                     >
                         {isLoading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                Scraping...
+                                {inputMode === 'search' ? 'Searching...' : 'Scraping...'}
                             </>
                         ) : (
-                            'Scrape Website'
+                            inputMode === 'search' ? 'Search & Extract' : 'Scrape Website'
                         )}
                     </Button>
                 </form>
