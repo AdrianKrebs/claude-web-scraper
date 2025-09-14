@@ -10,6 +10,7 @@ A powerful web scraper powered by Claude AI that can extract content from any we
 ## Features
 
 - 🤖 **AI-Powered Extraction**: Uses Claude's advanced web_fetch tool to intelligently scrape and parse websites
+- 🔍 **Smart Web Search**: Search the web and extract data from the most relevant results using Claude's web search capabilities
 - 📝 **Dual Output Modes**: Get content as clean Markdown or structured JSON
 - 🎯 **Custom Extraction**: Define exactly what data you want with natural language prompts
 - 🎨 **Beautiful UI**: Clean, modern interface with syntax highlighting
@@ -57,21 +58,34 @@ npm run dev
 
 ## Usage
 
-### Basic Usage
+### Input Methods
 
-1. Enter a website URL you want to scrape
-2. Choose your extraction mode:
-   - **Markdown**: Extracts all content as clean markdown
-   - **JSON**: Extracts structured data based on your instructions
+Choose between two input methods:
 
-### JSON Mode
+1. **Website URL**: Direct scraping of a specific website
+2. **Web Search**: Search the web first, then extract data from the most relevant results
 
-In JSON mode, provide extraction instructions like:
-- "Extract product information including name, price, and availability"
-- "Get all article titles, authors, and publication dates"
-- "Extract company details, services offered, and contact information"
+### Output Formats
 
-The AI will intelligently identify and structure the requested data.
+Choose your preferred output format:
+- **Markdown**: Extracts all content as clean, formatted markdown
+- **JSON**: Extracts structured data based on your instructions
+
+### Examples
+
+**Web Search + JSON:**
+- Search: "latest quantum computing breakthroughs 2024"
+- Instructions: "Extract article titles, publication dates, and key findings"
+
+**URL + JSON:**
+- URL: "https://example.com/products"
+- Instructions: "Extract product information including name, price, and availability"
+
+**Web Search + Markdown:**
+- Search: "best practices for web scraping"
+- Get clean markdown content from the most relevant articles
+
+The AI will intelligently search, fetch, and structure the requested data.
 
 ## API Endpoints
 
