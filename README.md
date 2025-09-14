@@ -18,7 +18,7 @@ A powerful web scraper powered by Claude AI that can extract content from any we
 
 ## Demo
 
-Try it live at: [Your Demo URL]
+Try it live at: https://claude-web-scraper.vercel.app
 
 ## Prerequisites
 
