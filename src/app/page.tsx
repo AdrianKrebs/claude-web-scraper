@@ -15,13 +15,16 @@ interface ScrapedResult {
     success: boolean;
     mode: 'markdown' | 'json';
     raw_content: Array<{
+        type: 'web_fetch' | 'web_search';
         url: string;
-        retrieved_at: string;
-        content_type: string;
+        retrieved_at?: string;
+        content_type?: string;
+        title?: string;
         content: string;
     }>;
     claude_result: string;
     original_url: string;
+    search_query?: string | null;
     schema_used: string | null;
     custom_prompt: string | null;
 }
@@ -223,7 +226,10 @@ function HomePageContent() {
                                 </Button>
                             </CardTitle>
                             <CardDescription>
-                                Scraped from: {results.original_url}
+                                {results.search_query ? 
+                                    `Search results for: "${results.search_query}"` : 
+                                    `Scraped from: ${results.original_url}`
+                                }
                             </CardDescription>
                         </CardHeader>
                         <CardContent>

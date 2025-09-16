@@ -1,7 +1,25 @@
 {
   "name": "claude-web-scraper",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "A powerful web scraper powered by Claude AI that can extract content from any website and transform it into clean markdown or structured JSON data",
+  "keywords": [
+    "web-scraper",
+    "claude",
+    "ai",
+    "anthropic",
+    "markdown",
+    "json",
+    "nextjs",
+    "typescript"
+  ],
+  "author": "Kadoa",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/claude-web-scraper.git"
+  },
+  "homepage": "https://claude-web-scraper.vercel.app",
+  "private": false,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
