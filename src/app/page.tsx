@@ -98,7 +98,7 @@ function HomePageContent() {
                     <h1 className="text-5xl font-bold mb-3 bg-main">
                         Claude Web Scraper
                     </h1>
-                    <p className="mb-10">Let Claude analyze any website and turn it into structured data.</p>
+                    <p className="mb-10">Uses Claude's web fetch and web search tools to extract data from any website.</p>
                 </div>
                 
                 <form onSubmit={handleSubmit} className="space-y-5 mb-8">

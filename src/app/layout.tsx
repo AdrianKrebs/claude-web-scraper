@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Claude Web Scraper",
-  description: "Let Claude analyze any website and turn it into structured data",
+  description: "Let Claude analyze any website and turn it into structured data - by Kadoa",
 };
 
 export default function RootLayout({
