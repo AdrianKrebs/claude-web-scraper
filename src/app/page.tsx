@@ -283,13 +283,16 @@ function HomePageContent() {
             </div>
 
             <div className="mt-16 flex flex-col items-center gap-4">
-                <div className="flex justify-center items-center  text-sm md:text-md">
-                    <p className="pr-2">by</p>  <a href={"https://kadoa.com"}><Image
-                    src="/kadoa-logo.svg"
-                    height={30}
-                    width={100}
-                    alt="kadoa"
-                /></a><p className="px-2"> • </p> AI agents for web data (We're hiring!)
+                <div className="flex justify-center items-center text-sm md:text-md">
+                    <p className="pr-2">Made with ❤️ by</p>
+                    <a href={"https://kadoa.com"}>
+                        <Image
+                            src="/kadoa-logo.svg"
+                            height={30}
+                            width={100}
+                            alt="kadoa"
+                        />
+                    </a>
                 </div>
             </div>
         </div>
