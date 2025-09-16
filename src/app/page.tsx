@@ -125,6 +125,7 @@ function HomePageContent() {
                             <Label htmlFor="url">Website URL *</Label>
                             <Input
                                 id="url"
+                                autoComplete="off"
                                 type="url"
                                 value={url}
                                 onChange={(e) => setUrl(e.target.value)}

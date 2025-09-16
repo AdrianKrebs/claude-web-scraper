@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       prompt = `Extract and return all content from ${url} as markdown (nothing else around it). Don't hallucinate or make anything up, just 1:1 content.`;
     } else {
       // JSON mode with URL
-      prompt = `Fetch the content from ${url} and extract structured data. Your response must be ONLY valid JSON with no additional text, explanations, or markdown formatting.`;
+      prompt = `Fetch the content from ${url} and extract structured data. Return ONLY raw JSON - no code blocks, no markdown formatting, no explanations, just the JSON object.`;
       
       if (schema) {
         prompt += ` Use this exact JSON schema structure: ${schema}`;
@@ -130,7 +130,6 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Clean up JSON responses
     let claudeResult = textContent;
 
     console.log(`[Scrape API] Extracted ${rawContent.length} web_fetch results`);
